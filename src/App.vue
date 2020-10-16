@@ -1,28 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <main-header />
+    <main-section />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//REGISTER ICONS FONTAWESOME
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faTruck, faSearch, faHeart, faShoppingBag, faList, faChevronDown} from '@fortawesome/free-solid-svg-icons'
+import {faFacebookF, faTwitter, faPinterestP, faInstagram} from '@fortawesome/free-brands-svg-icons'
+
+library.add(faTruck, faFacebookF, faTwitter, faPinterestP, faInstagram, faSearch, faHeart, faShoppingBag, faList, faChevronDown)
+
+
+
+import Header from './components/Header/Header'
+import MainSection from './components/MainSection/MainSection'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    'main-header': Header,
+    'main-section': MainSection,
+  },
 }
 </script>
 
 <style>
+@font-face {
+  font-family: "Varela Round";
+  src: url(./assets/font-family/VarelaRound-Regular.ttf);
+}
+body{
+  margin: 0;
+  padding: 0;
+}
+/* CONFLICT WITH BOOTSTRAP */
+a{
+  text-decoration: none !important; 
+  color: inherit !important;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family:"Varela Round", Arial, serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
+  padding: 0;
 }
 </style>
