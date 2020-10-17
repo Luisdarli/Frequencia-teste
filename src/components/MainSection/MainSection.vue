@@ -4,7 +4,8 @@
       <img class="app-main-section-image" src="../../assets/images/logo.png" />
 
       <div class="input-group">
-        <input
+        <input 
+            @click.stop="showCards"
           class="app-main-section-input"
           type="text"
           placeholder="Find your product"
@@ -16,22 +17,30 @@
             :icon="['fas', 'search']"
           />
         </span>
-        <div class="app-main-section-cards">
+        <div v-show="shouldShowCards" v-click-outside="hideCards" class="app-main-section-cards" id="app-main-section-show-cards">
           <div
             class="app-main-section-card"
             v-for="card in pagination"
             :key="card.id"
           >
-            <img :src="getImage(card.imagem)">
+            <img :src="getImage(card.imagem)" />
             <div class="app-main-section-card-wrapper">
               <h5>{{ card.nome }}</h5>
-              <span v-html="checkValue(card.valor)"></span>
-              <span v-html="checkValue(card.valorde)"></span>
+              <span
+                class="app-main-section-card-value"
+                v-html="checkValue(card.valorde)"
+              ></span>
+              <span
+                class="app-main-section-card-value-offer"
+                v-html="checkValue(card.valor)"
+              ></span>
             </div>
           </div>
-          <span class="app-main-section-cards-btn" @click="cardsToShow += 2"
-            >View More</span
-          >
+          <div class="app-main-section-cards-btn-content">
+            <span class="app-main-section-cards-btn" @click="cardsToShow += 2"
+              >View More</span
+            >
+          </div>
         </div>
       </div>
 
@@ -132,6 +141,7 @@ export default {
       bagCount: 0,
       data: [],
       cardsToShow: 6,
+      shouldShowCards: false,
     };
   },
   computed: {
@@ -152,20 +162,31 @@ export default {
     },
     checkValue(value) {
       if (value != null) {
-        return `<span>$ ${value}</span>`;
+        return `<span>$${value}</span>`;
       }
     },
-    getImage(img){
-        return require(`../../assets/images/produtos/${img}`)
+    getImage(img) {
+      return require(`../../assets/images/produtos/${img}`);
+    },
+    showCards(){
+        this.shouldShowCards = true;
+    },
+    hideCards(){
+        this.shouldShowCards = false;
     }
   },
   mounted() {
     this.getData();
+    this.popupItem = this.$el;
   },
+  directives: {
+      
+  }
 };
 </script>
 
 <style scoped>
+
 #app-main-section {
   margin: 0 auto;
   width: 80%;
@@ -207,17 +228,19 @@ export default {
 }
 
 .app-main-section-cards {
+  display: flex;
   position: absolute;
   top: 45px;
-  width: 550px;
+  width: 650px;
   height: auto;
   border: 0.5px solid rgb(151, 151, 151);
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  border-radius: 8px;
 }
 
 .app-main-section-card {
+  padding: 15px;
   background-color: white;
   width: 50%;
   border-bottom: 0.5px solid rgb(151, 151, 151);
@@ -226,10 +249,32 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+}
+.app-main-section-card img {
+  width: 80px;
+  height: auto;
 }
 .app-main-section-card-wrapper {
 }
-
+.app-main-section-card-value {
+  color: rgb(185, 185, 185);
+  text-decoration: line-through;
+}
+.app-main-section-card-value-offer {
+  color: #51aa1b;
+}
+.app-main-section-cards-btn-content {
+  padding: 40px;
+  display: block;
+  width: 100%;
+}
+.app-main-section-cards-btn {
+  cursor: pointer;
+  padding: 15px 20px;
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
 .app-main-section-card-wrapper span {
   margin-right: 10px;
 }
