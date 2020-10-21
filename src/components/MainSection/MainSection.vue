@@ -4,8 +4,8 @@
       <img class="app-main-section-image" src="../../assets/images/logo.png" />
 
       <div class="input-group">
-        <input 
-            @click.stop="showCards"
+        <input
+          @click.stop="showCards"
           class="app-main-section-input"
           type="text"
           placeholder="Find your product"
@@ -17,13 +17,19 @@
             :icon="['fas', 'search']"
           />
         </span>
-        <div v-show="shouldShowCards" v-click-outside="hideCards" class="app-main-section-cards" id="app-main-section-show-cards">
+        <div
+          v-show="shouldShowCards"
+          v-click-outside="hideCards"
+          class="app-main-section-cards"
+          id="app-main-section-show-cards"
+        >
           <div
             class="app-main-section-card"
             v-for="card in pagination"
             :key="card.id"
+            @click="addToCart(card.id)"
           >
-            <img :src="getImage(card.imagem)" />
+            <img  :src="getImage(card.imagem)" />
             <div class="app-main-section-card-wrapper">
               <h5>{{ card.nome }}</h5>
               <span
@@ -44,18 +50,7 @@
         </div>
       </div>
 
-      <div class="app-main-section-icons-group">
-        <span class="app-main-section-icon-number">{{ likeCount }}</span>
-        <font-awesome-icon
-          class="app-main-section-icons heart-icon"
-          :icon="['fas', 'heart']"
-        />
-        <span class="app-main-section-icon-number">{{ bagCount }}</span>
-        <font-awesome-icon
-          class="app-main-section-icons bag-icon"
-          :icon="['fas', 'shopping-bag']"
-        />
-      </div>
+      <shop-cart /> <!-- IMPORT COMPONENT -->
     </div>
 
     <div class="app-main-section-wrapper">
@@ -132,61 +127,54 @@
 </template>
 
 <script>
-import axios from "axios";
+
+import ShopCart from "../shop-cart/ShopCart";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      likeCount: 0,
-      bagCount: 0,
       data: [],
-      cardsToShow: 6,
       shouldShowCards: false,
+      cardsToShow: 6,
     };
   },
+  components: {
+    "shop-cart": ShopCart,
+  },
   computed: {
-    pagination() {
-      return this.data.slice(0, this.cardsToShow);
+    ...mapGetters(["showMoreCards"]),
+    pagination(){
+      return this.showMoreCards.slice(0, this.cardsToShow);
     },
   },
   methods: {
-    getData() {
-      axios
-        .get("http://localhost:3009/getAll")
-        .then((res) => {
-          this.data = res.data.rows;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     checkValue(value) {
       if (value != null) {
         return `<span>$${value}</span>`;
       }
     },
+    addToCart(id){
+      this.$store.dispatch("addToCart", id);
+    },
     getImage(img) {
       return require(`../../assets/images/produtos/${img}`);
     },
-    showCards(){
-        this.shouldShowCards = true;
-    },
-    hideCards(){
-        this.shouldShowCards = false;
-    }
-  },
-  mounted() {
-    this.getData();
-    this.popupItem = this.$el;
-  },
-  directives: {
+    showCards() {
+      this.shouldShowCards = true;
       
-  }
+    },
+    hideCards() { 
+      this.shouldShowCards = false;
+    },
+  },
+  created() {
+    this.$store.dispatch("fetchProducts");
+  },
 };
 </script>
 
 <style scoped>
-
 #app-main-section {
   margin: 0 auto;
   width: 80%;
