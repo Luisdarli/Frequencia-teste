@@ -25,7 +25,7 @@
         >
           <div
             class="app-main-section-card"
-            v-for="card in pagination"
+            v-for="card in pagination.slice(0, cardsToShow)"
             :key="card.id"
             @click="addToCart(card.id)"
           >
@@ -129,7 +129,6 @@
 <script>
 
 import ShopCart from "../shop-cart/ShopCart";
-import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -143,9 +142,8 @@ export default {
     "shop-cart": ShopCart,
   },
   computed: {
-    ...mapGetters(["showMoreCards"]),
     pagination(){
-      return this.showMoreCards.slice(0, this.cardsToShow);
+     return this.$store.state.products
     },
   },
   methods: {
@@ -161,8 +159,7 @@ export default {
       return require(`../../assets/images/produtos/${img}`);
     },
     showCards() {
-      this.shouldShowCards = true;
-      
+      this.shouldShowCards = true; 
     },
     hideCards() { 
       this.shouldShowCards = false;

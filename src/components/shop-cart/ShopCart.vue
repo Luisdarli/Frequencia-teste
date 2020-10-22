@@ -1,5 +1,10 @@
 <template>
   <div class="app-main-section-icons-group">
+    <span class="app-main-section-icon-number">{{ likeCount }}</span>
+    <font-awesome-icon
+      class="app-main-section-icons heart-icon"
+      :icon="['fas', 'heart']"
+    />
     <span class="app-main-section-icon-number" :class="{ active: active }">{{
       cartSize
     }}</span>
@@ -7,11 +12,6 @@
       @click="showCart"
       class="app-main-section-icons bag-icon"
       :icon="['fas', 'shopping-bag']"
-    />
-    <span class="app-main-section-icon-number">{{ likeCount }}</span>
-    <font-awesome-icon
-      class="app-main-section-icons heart-icon"
-      :icon="['fas', 'heart']"
     />
     <div v-if="active" class="app-shop-cart">
       <div class="app-shop-cart-wrapper">
@@ -27,16 +27,20 @@
           <img :src="getImage(item.imagem)" />
           <h5 class="app-shop-cart-itens-title">{{ item.nome }}</h5>
           <font-awesome-icon
-          @click="showCart"
-          class="app-shop-cart-itens-icon"
-          :icon="['fas', 'times-circle']"
-        />
+            @click="removeCart(item.id)"
+            class="app-shop-cart-itens-icon"
+            :icon="['fas', 'times-circle']"
+          />
         </div>
-          <span class="app-shop-cart-itens-quantity">{{ item.quantity }} x</span>
-          <span class="app-shop-cart-itens-price" v-html="checkValue(item.valor)">{{ item.valor }}</span>
+        <span class="app-shop-cart-itens-quantity">{{ item.quantity }} x</span>
+        <span
+          class="app-shop-cart-itens-price"
+          v-html="checkValue(item.valor)"
+          >{{ item.valor }}</span
+        >
       </div>
 
-      <span>Subtotal: {{cartTotalAmount}} </span>
+      <span>Subtotal: {{ cartTotalAmount }} </span>
     </div>
   </div>
 </template>
@@ -57,6 +61,9 @@ export default {
   methods: {
     showCart() {
       this.active = !this.active;
+    },
+    removeCart(id){
+      this.$store.dispatch("removeFromCart", id)
     },
     checkValue(value) {
       if (value != null) {
@@ -130,7 +137,7 @@ export default {
   border-top: 2px solid rgb(240, 240, 240);
   padding: 10px 0;
 }
-.app-shop-cart-itens-wrapper{
+.app-shop-cart-itens-wrapper {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -141,15 +148,15 @@ export default {
   width: 100px;
   height: auto;
 }
-.app-shop-cart-itens-title{
+.app-shop-cart-itens-title {
   margin-left: 8px;
 }
-.app-shop-cart-itens-icon{
+.app-shop-cart-itens-icon {
   font-size: 16px;
   color: red;
 }
 
-.app-shop-cart-itens-price{
+.app-shop-cart-itens-price {
   color: #51aa1b;
   margin-left: 10px;
 }

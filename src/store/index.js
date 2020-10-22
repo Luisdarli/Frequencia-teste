@@ -18,9 +18,6 @@ export default new Vuex.Store({
                 return total + (product.valor * product.quantity);
             },0);
         },
-        showMoreCards:(state) =>{
-            return state.products;
-        }
     },
     mutations:{
         setUpProducts:(state, productsPayload) => {
@@ -42,13 +39,18 @@ export default new Vuex.Store({
                 })
             }
         },
+        removeFromCart:(state, productId) =>{
+            let cartProductIndex = state.cart.find((product) => product.id === productId);
+            state.cart.splice(cartProductIndex, 1);
+        },
     },
     actions:{
-        fetchProducts:({ commit }) => {
+        fetchProducts: ({ commit }) => {
+
             axios
             .get("http://localhost:3009/getAll")
-            .then((res) => {
-               commit("setUpProducts", res);
+            .then((res) => {            
+                commit("setUpProducts", res);
             })
             .catch((err) => {
               console.log(err);
@@ -57,6 +59,9 @@ export default new Vuex.Store({
         addToCart: ({ commit }, productId) => {
             commit("addToCart", productId)
         },
+        removeFromCart: ({ commit }, productId) => {
+            commit("removeFromCart", productId)
+        }
     }
 })
 
