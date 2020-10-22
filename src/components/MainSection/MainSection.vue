@@ -8,11 +8,12 @@
           @click.stop="showCards"
           v-model="onSearch"
           class="app-main-section-input"
+          id="app-main-section-main-input"
           type="text"
           placeholder="Find your product"
         />
 
-        <span class="app-main-section-icon-content">
+        <span class="app-main-section-icon-content" id="app-main-section-main-icon">
           <font-awesome-icon
             class="app-main-section-icon"
             :icon="['fas', 'search']"
@@ -30,7 +31,7 @@
             :key="card.id"
             @click="addToCart(card.id)"
           >
-            <img  :src="getImage(card.imagem)" />
+            <img :src="getImage(card.imagem)" />
             <div class="app-main-section-card-wrapper">
               <h5>{{ card.nome }}</h5>
               <span
@@ -50,8 +51,15 @@
           </div>
         </div>
       </div>
-
+      <div class="app-main-section-icon-group">
+      <font-awesome-icon
+        @click.stop="showCards"
+        class="app-main-section-icons"
+        id="app-main-section-icon-responsive"
+        :icon="['fas', 'border-all']"
+      />
       <shop-cart /> <!-- IMPORT COMPONENT -->
+      </div>
     </div>
 
     <div class="app-main-section-wrapper">
@@ -128,9 +136,7 @@
 </template>
 
 <script>
-
 import ShopCart from "../shop-cart/ShopCart";
-
 
 export default {
   data() {
@@ -144,18 +150,17 @@ export default {
     "shop-cart": ShopCart,
   },
   computed: {
-    onSearch:{
-      get(){
+    onSearch: {
+      get() {
         return this.$store.state.searchTextValue;
       },
       set(value) {
         this.$store.commit("searchText", value);
-      }
+      },
     },
-    pagination(){
-     return this.$store.getters.showCards;
+    pagination() {
+      return this.$store.getters.showCards;
     },
-
   },
   methods: {
     checkValue(value) {
@@ -163,19 +168,19 @@ export default {
         return `<span>$${value}</span>`;
       }
     },
-    showMore(num){
-      this.$store.dispatch("showMore", num)
+    showMore(num) {
+      this.$store.dispatch("showMore", num);
     },
-    addToCart(id){
+    addToCart(id) {
       this.$store.dispatch("addToCart", id);
     },
     getImage(img) {
       return require(`../../assets/images/produtos/${img}`);
     },
     showCards() {
-      this.shouldShowCards = true; 
+      this.shouldShowCards = true;
     },
-    hideCards() { 
+    hideCards() {
       this.shouldShowCards = false;
     },
   },
@@ -202,6 +207,7 @@ export default {
 }
 .input-group {
   display: flex;
+  flex-wrap: nowrap;
   align-content: stretch;
   justify-content: center;
 }
@@ -236,6 +242,9 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   border-radius: 8px;
+  background-color: #ffffff;
+  z-index: 1;
+  padding: 5px;
 }
 
 .app-main-section-card {
@@ -273,6 +282,17 @@ export default {
   padding: 15px 20px;
   background-color: #4a4a4a;
   color: #ffffff;
+}
+.app-main-section-icon-group{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#app-main-section-icon-responsive{
+  display: none;
 }
 .app-main-section-card-wrapper span {
   margin-right: 10px;
@@ -344,6 +364,30 @@ export default {
   height: auto;
   color: #ffffff;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 1150px) {
+  .app-main-section-input {
+    width: 300px;
+  }
+  .app-main-section-list li {
+    display: block;
+  }
+}
+@media only screen and (max-width: 970px) {
+  #app-main-section-main-input{
+    display: none;
+  }
+  #app-main-section-main-icon{
+    display: none;
+  }
+  #app-main-section-icon-responsive{
+     display: block;
+  }
+  .app-main-section-wrapper:nth-child(2){
+    flex-direction: column;
+  }
+
 }
 </style>
 

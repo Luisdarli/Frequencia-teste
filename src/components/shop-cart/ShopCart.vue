@@ -40,7 +40,10 @@
         >
       </div>
 
-      <span class="app-shop-cart-total"><b>Subtotal:</b> <span class="app-shop-cart-itens-price">$ {{ cartTotalAmount }}</span> </span>
+      <span class="app-shop-cart-total"
+        ><b>Subtotal:</b>
+        <span class="app-shop-cart-itens-price">$ {{ cartTotalAmount }}</span>
+      </span>
       <div class="app-shop-cart-buttons">
         <span class="app-shop-cart-button">View cart</span>
         <span class="app-shop-cart-button">Checkout</span>
@@ -66,8 +69,8 @@ export default {
     showCart() {
       this.active = !this.active;
     },
-    removeCart(id){
-      this.$store.dispatch("removeFromCart", id)
+    removeCart(id) {
+      this.$store.dispatch("removeFromCart", id);
     },
     checkValue(value) {
       if (value != null) {
@@ -114,7 +117,7 @@ export default {
   right: 0;
   height: 100vh;
   width: 500px;
-  background-color: #ffffff;
+  background-color: #b2b2b2;
   transition: 0.5s;
   display: flex;
   flex-direction: column;
@@ -167,19 +170,19 @@ export default {
   color: #51aa1b;
   margin-left: 10px;
 }
-.app-shop-cart-total{
+.app-shop-cart-total {
   padding-left: 20px;
   width: 100%;
   display: flex;
   align-items: flex-start;
 }
-.app-shop-cart-buttons{
+.app-shop-cart-buttons {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
-.app-shop-cart-button{
+.app-shop-cart-button {
   margin: 20px;
   padding: 15px 40px;
   border-radius: 30px;

@@ -8,10 +8,10 @@
 <script>
 //REGISTER ICONS FONTAWESOME
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTruck, faSearch, faHeart, faShoppingBag, faList, faChevronDown, faTimesCircle} from '@fortawesome/free-solid-svg-icons'
+import { faTruck, faSearch, faHeart, faShoppingBag, faList, faChevronDown, faTimesCircle, faBorderAll} from '@fortawesome/free-solid-svg-icons'
 import {faFacebookF, faTwitter, faPinterestP, faInstagram} from '@fortawesome/free-brands-svg-icons'
 
-library.add(faTruck, faFacebookF, faTwitter, faPinterestP, faInstagram, faSearch, faHeart, faShoppingBag, faList, faChevronDown, faTimesCircle)
+library.add(faTruck, faFacebookF, faTwitter, faPinterestP, faInstagram, faSearch, faHeart, faShoppingBag, faList, faChevronDown, faTimesCircle, faBorderAll)
 
 
 
