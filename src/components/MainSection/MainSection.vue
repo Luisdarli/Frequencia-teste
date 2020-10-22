@@ -6,6 +6,7 @@
       <div class="input-group">
         <input
           @click.stop="showCards"
+          v-model="onSearch"
           class="app-main-section-input"
           type="text"
           placeholder="Find your product"
@@ -25,7 +26,7 @@
         >
           <div
             class="app-main-section-card"
-            v-for="card in pagination.slice(0, cardsToShow)"
+            v-for="card in pagination"
             :key="card.id"
             @click="addToCart(card.id)"
           >
@@ -43,7 +44,7 @@
             </div>
           </div>
           <div class="app-main-section-cards-btn-content">
-            <span class="app-main-section-cards-btn" @click="cardsToShow += 2"
+            <span class="app-main-section-cards-btn" @click="showMore(2)"
               >View More</span
             >
           </div>
@@ -130,6 +131,7 @@
 
 import ShopCart from "../shop-cart/ShopCart";
 
+
 export default {
   data() {
     return {
@@ -142,15 +144,27 @@ export default {
     "shop-cart": ShopCart,
   },
   computed: {
-    pagination(){
-     return this.$store.state.products
+    onSearch:{
+      get(){
+        return this.$store.state.searchTextValue;
+      },
+      set(value) {
+        this.$store.commit("searchText", value);
+      }
     },
+    pagination(){
+     return this.$store.getters.showCards;
+    },
+
   },
   methods: {
     checkValue(value) {
       if (value != null) {
         return `<span>$${value}</span>`;
       }
+    },
+    showMore(num){
+      this.$store.dispatch("showMore", num)
     },
     addToCart(id){
       this.$store.dispatch("addToCart", id);

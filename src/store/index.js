@@ -6,8 +6,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
-        products: null,
+        products: [],
         cart:[],
+        cardsToShow: 6,
+        searchTextValue : "",
     },
     getters:{
         cartSize:(state) => {
@@ -17,6 +19,13 @@ export default new Vuex.Store({
             return state.cart.reduce((total, product) => {
                 return total + (product.valor * product.quantity);
             },0);
+        },
+        showCards:(state) =>{
+            let formattedArr = state.products;
+            return formattedArr.slice(0, state.cardsToShow).filter(product =>{
+                return product.nome.toLowerCase().includes(state.searchTextValue.toLowerCase());
+            })
+           
         },
     },
     mutations:{
@@ -43,10 +52,15 @@ export default new Vuex.Store({
             let cartProductIndex = state.cart.find((product) => product.id === productId);
             state.cart.splice(cartProductIndex, 1);
         },
+        showMore:(state, sum) => {
+            state.cardsToShow = state.cardsToShow + sum;
+        },
+        searchText:(state, value) => {
+            state.searchTextValue = value;  
+        }
     },
     actions:{
         fetchProducts: ({ commit }) => {
-
             axios
             .get("http://localhost:3009/getAll")
             .then((res) => {            
@@ -61,6 +75,12 @@ export default new Vuex.Store({
         },
         removeFromCart: ({ commit }, productId) => {
             commit("removeFromCart", productId)
+        },
+        showMore: ({ commit }, sum) =>{
+            commit("showMore", sum);
+        },
+        searchText: ({ commit }, value) =>{
+            commit("searchText", value);
         }
     }
 })

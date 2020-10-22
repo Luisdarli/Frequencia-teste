@@ -10,7 +10,7 @@
     }}</span>
     <font-awesome-icon
       @click="showCart"
-      class="app-main-section-icons bag-icon"
+      class="app-main-section-icons"
       :icon="['fas', 'shopping-bag']"
     />
     <div v-if="active" class="app-shop-cart">
@@ -40,7 +40,11 @@
         >
       </div>
 
-      <span>Subtotal: {{ cartTotalAmount }} </span>
+      <span class="app-shop-cart-total"><b>Subtotal:</b> <span class="app-shop-cart-itens-price">$ {{ cartTotalAmount }}</span> </span>
+      <div class="app-shop-cart-buttons">
+        <span class="app-shop-cart-button">View cart</span>
+        <span class="app-shop-cart-button">Checkout</span>
+      </div>
     </div>
   </div>
 </template>
@@ -97,6 +101,7 @@ export default {
   flex-wrap: nowrap;
 }
 .app-main-section-icons {
+  cursor: pointer;
   color: black;
   font-size: 30px;
   margin-left: 25px;
@@ -114,6 +119,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
 }
 .app-shop-cart-wrapper {
   width: 100%;
@@ -149,6 +155,7 @@ export default {
   height: auto;
 }
 .app-shop-cart-itens-title {
+  color: #007cff;
   margin-left: 8px;
 }
 .app-shop-cart-itens-icon {
@@ -159,5 +166,24 @@ export default {
 .app-shop-cart-itens-price {
   color: #51aa1b;
   margin-left: 10px;
+}
+.app-shop-cart-total{
+  padding-left: 20px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+.app-shop-cart-buttons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.app-shop-cart-button{
+  margin: 20px;
+  padding: 15px 40px;
+  border-radius: 30px;
+  background-color: #007cff;
+  color: #ffffff;
 }
 </style>
